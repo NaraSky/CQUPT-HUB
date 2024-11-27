@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="cqupt-hub-common" />
+        <module name="cqupt-hub-infra" />
+        <module name="cqupt-hub-starter" />
+        <module name="cqupt-hub-application" />
+        <module name="cqupt-hub-subject-api" />
+        <module name="cqupt-hub-domain" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>
