@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.lb</groupId>
-        <artifactId>cqupt-hub-subject</artifactId>
+        <artifactId>cqupt-hub-application</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>cqupt-hub-infra</artifactId>
+    <artifactId>cqupt-hub-application-controller</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -17,41 +17,32 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <!-- 定义项目依赖 -->
     <dependencies>
-        <!-- Spring Boot JDBC 依赖 -->
+        <!-- Spring Boot Web 依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
             <version>2.7.3</version>
         </dependency>
-
-        <!-- Druid 连接池依赖 -->
+        <!-- cqupt-hub-infra 项目依赖 -->
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.2.20</version>
+            <groupId>com.lb</groupId>
+            <artifactId>cqupt-hub-infra</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
-
-        <!-- MySQL JDBC 驱动依赖 -->
+        <!-- cqupt-hub-domain 项目依赖 -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.29</version>
+            <groupId>com.lb</groupId>
+            <artifactId>cqupt-hub-domain</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
-
-        <!-- MyBatis Plus 依赖 -->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.5.1</version>
-        </dependency>
-
-        <!-- CQUPT Hub 公共库依赖 -->
         <dependency>
             <groupId>com.lb</groupId>
             <artifactId>cqupt-hub-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
+
 
 </project>

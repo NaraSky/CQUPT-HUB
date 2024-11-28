@@ -10,10 +10,16 @@
     </parent>
 
     <artifactId>cqupt-hub-application</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>cqupt-hub-application-controller</module>
+        <module>cqupt-hub-application-job</module>
+        <module>cqupt-hub-application-mq</module>
+    </modules>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
