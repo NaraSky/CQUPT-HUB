@@ -1,0 +1,58 @@
+server:
+  # 服务端口配置
+  port: 3010
+
+spring:
+  datasource:
+    # 数据库驱动类名
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 数据库连接URL
+    url: jdbc:mysql://127.0.0.1:3306/cqupt_hub?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false
+    # 数据库用户名
+    username: root
+    # 数据库密码（已加密）
+    password: OttCT+GY40B1VoPHoSoRSRUukFGoSK8W8DvvylOo6GUic0e41IkZ6HuMSsOQPv3a7kuw0OHx4u3mbV5WFkWKhw==
+    # 数据源类型
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      # 初始化连接数
+      initial-size: 20
+      # 最小空闲连接数
+      min-idle: 20
+      # 连接属性配置
+      connectionProperties: config.decrypt=true;config.decrypt.key=${publicKey};
+      # 最大活跃连接数
+      max-active: 100
+      # 获取连接时最大等待时间，单位毫秒
+      max-wait: 60000
+      # Druid监控页面配置
+      stat-view-servlet:
+        # 是否启用监控统计功能
+        enabled: true
+        # 监控页面的访问URL模式
+        url-pattern: /druid/*
+        # 监控页面登录用户名
+        login-username: admin
+        # 监控页面登录密码
+        login-password: 123456
+      # Druid过滤器配置
+      filter:
+        stat:
+          # 是否启用StatFilter功能
+          enabled: true
+          # 慢SQL阈值，单位毫秒
+          slow-sql-millis: 2000
+          # 是否记录慢SQL
+          log-slow-sql: true
+        wall:
+          # 是否启用WallFilter功能
+          enabled: true
+        config:
+          # 是否启用ConfigFilter功能
+          enabled: true
+
+# 公钥，用于数据库密码解密
+publicKey: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMc9gKSoyhF5CRHandcDI+1SXaW6XN89/cCoMCdnDnrHqF3Pwg0zmS5vPKDMilpF/QZ83YRhwq7h5KjTaHbFKAsCAwEAAQ==
+
+logging:
+  config: classpath:log4j2-spring.xml
