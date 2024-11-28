@@ -12,9 +12,54 @@
     <artifactId>cqupt-hub-common</artifactId>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+        <!-- Lombok依赖，用于简化Java代码，通过注解减少样板代码 -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.34</version>
+        </dependency>
+
+        <!-- MapStruct依赖，用于实现Java Bean之间的映射 -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>1.5.4.Final</version>
+        </dependency>
+
+        <!-- MapStruct处理器依赖，用于在编译时生成映射代码 -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>1.5.4.Final</version>
+        </dependency>
+
+        <!-- Spring Boot Log4j2启动器依赖，用于集成Log4j2日志框架 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+            <version>2.7.3</version>
+        </dependency>
+
+        <!-- Fastjson依赖，用于处理JSON数据 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>2.0.44</version>
+        </dependency>
+
+        <!-- Guava依赖，提供一系列Java工具类和方法 -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0</version>
+        </dependency>
+    </dependencies>
+
 
 </project>
