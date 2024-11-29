@@ -7,6 +7,8 @@ import java.io.Serializable;
 @Data
 public class SubjectCategoryDTO implements Serializable {
 
+    private static final long serialVersionUID = 1152520298615707273L;
+
     /**
      * 主键
      */
@@ -31,6 +33,4 @@ public class SubjectCategoryDTO implements Serializable {
      * 父级id
      */
     private Long parentId;
-
-    private static final long serialVersionUID = 1L;
 }
