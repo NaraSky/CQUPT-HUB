@@ -1,6 +1,7 @@
 package com.lb.subject.domain.service.impl;
 
 import com.alibaba.fastjson2.JSON;
+import com.lb.subject.common.entity.PageResult;
 import com.lb.subject.domain.convert.SubjectInfoConverter;
 import com.lb.subject.domain.entity.SubjectInfoBO;
 import com.lb.subject.domain.handler.SubjectTypeHandler;
@@ -85,5 +86,51 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
         });
         return subjectMappings;
     }
+
+    /**
+     * 根据给定的SubjectInfoBO对象分页查询学科信息
+     *
+     * @param subjectInfoBO 包含查询条件的SubjectInfoBO对象
+     * @return 包含查询结果的PageResult对象，包含分页信息和查询结果列表
+     */
+    @Override
+    public PageResult<SubjectInfoBO> getSubjectPage(SubjectInfoBO subjectInfoBO) {
+        // 创建一个PageResult对象
+        PageResult<SubjectInfoBO> pageResult = new PageResult<>();
+        // 设置当前页码
+        pageResult.setPageNo(subjectInfoBO.getPageNum());
+        // 设置每页显示的记录数
+        pageResult.setPageSize(subjectInfoBO.getPageSize());
+        // 计算当前页的记录起始位置
+        int start = (subjectInfoBO.getPageNum() - 1) * subjectInfoBO.getPageSize();
+
+        // 将SubjectInfoBO对象转换为SubjectInfo对象
+        SubjectInfo subjectInfo = SubjectInfoConverter.INSTANCE.convertBOTOSubjectInfo(subjectInfoBO);
+
+        // 根据条件查询满足条件的记录总数
+        int count = subjectInfoService.countByCondition(subjectInfo, subjectInfoBO.getCategoryId(), subjectInfoBO.getLabelId());
+
+        // 如果没有满足条件的记录，则直接返回空的PageResult对象
+        if (count == 0) {
+            return pageResult;
+        }
+
+        // 根据条件查询满足条件的记录列表
+        List<SubjectInfo> subjectInfoList = subjectInfoService.queryPage(subjectInfo, subjectInfoBO.getCategoryId()
+                , subjectInfoBO.getLabelId(), start, subjectInfoBO.getPageSize());
+
+        // 将SubjectInfo列表转换为SubjectInfoBO列表
+        List<SubjectInfoBO> subjectInfoBOS = SubjectInfoConverter.INSTANCE.convertSubjectInfoListTOBO(subjectInfoList);
+
+        // 设置查询结果列表
+        pageResult.setRecords(subjectInfoBOS);
+        // 设置总记录数
+        pageResult.setTotal(count);
+
+        return pageResult;
+    }
+
+
+
 
 }

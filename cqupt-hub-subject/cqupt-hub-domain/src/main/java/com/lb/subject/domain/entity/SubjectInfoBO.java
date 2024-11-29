@@ -1,14 +1,15 @@
 package com.lb.subject.domain.entity;
 
+import com.lb.subject.common.entity.PageInfo;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class SubjectInfoBO implements Serializable {
+public class SubjectInfoBO extends PageInfo implements Serializable {
 
-    private static final long serialVersionUID = 2966154435486945690L;
+    private static final long serialVersionUID = 7384563368923914474L;
 
     /**
      * 主键
@@ -59,4 +60,13 @@ public class SubjectInfoBO implements Serializable {
      */
     private List<SubjectAnswerBO> optionList;
 
+    /**
+     * 分类id
+     */
+    private Long categoryId;
+
+    /**
+     * 标签id
+     */
+    private Long labelId;
 }

@@ -81,6 +81,57 @@
         limit #{pageable.offset}, #{pageable.pageSize}
     </select>
 
+    <!--根据条件查询总行数-->
+    <select id="countByCondition" resultType="java.lang.Integer">
+        <!-- 选择行数 -->
+        select count(1)
+        <!-- 从subject_info和subject_mapping两张表中查询 -->
+        from subject_info a,
+             subject_mapping b
+        <!-- 查询条件 -->
+        where a.subject_difficult = #{subjectInfo.subjectDifficult}
+          <!-- 类别ID条件 -->
+          and b.category_id = #{categoryId}
+          <!-- 标签ID条件 -->
+          and b.label_id = #{labelId}
+          <!-- 筛选未删除的记录 -->
+          and a.is_deleted = 0
+          <!-- 筛选未删除的记录 -->
+          and b.is_deleted = 0
+    </select>
+
+
+    <!--根据条件查询数据-->
+    <select id="queryPage" resultMap="SubjectInfoMap">
+        <!-- 选择需要的字段 -->
+        select id,
+               subject_name,
+               subject_difficult,
+               settle_name,
+               subject_type,
+               subject_score,
+               subject_parse,
+               created_by,
+               created_time,
+               update_by,
+               update_time,
+               is_deleted
+        from subject_info a,
+             subject_mapping b
+        <!-- 条件筛选 -->
+        where a.subject_difficult = #{subjectInfo.subjectDifficult}
+          <!-- 类别ID条件 -->
+          and b.category_id = #{categoryId}
+          <!-- 标签ID条件 -->
+          and b.label_id = #{labelId}
+          <!-- 删除标记条件 -->
+          and a.is_deleted = 0
+          <!-- 删除标记条件 -->
+          and b.is_deleted = 0
+    </select>
+
+
+
     <!--统计总行数-->
     <select id="count" resultType="java.lang.Long">
         select count(1)

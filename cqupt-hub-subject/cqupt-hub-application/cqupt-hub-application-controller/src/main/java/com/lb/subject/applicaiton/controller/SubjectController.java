@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
 import com.lb.subject.applicaiton.converter.SubjectAnswerDTOConverter;
 import com.lb.subject.applicaiton.converter.SubjectInfoDTOConverter;
 import com.lb.subject.applicaiton.dto.SubjectInfoDTO;
+import com.lb.subject.common.entity.PageResult;
 import com.lb.subject.common.entity.Result;
 import com.lb.subject.domain.entity.SubjectAnswerBO;
 import com.lb.subject.domain.entity.SubjectInfoBO;
@@ -58,6 +59,30 @@ public class SubjectController {
         } catch (Exception e) {
             log.error("SubjectCategoryController.add.error:{}", e.getMessage(), e);
             return Result.fail("新增题目失败");
+        }
+    }
+
+    /**
+     * 获取题目分页数据接口
+     *
+     * @param subjectInfoDTO 包含请求参数的DTO对象
+     * @return 包含分页结果的Result对象
+     */
+    @PostMapping("/getSubjectPage")
+    public Result<PageResult<SubjectInfoDTO>> getSubjectPage(@RequestBody SubjectInfoDTO subjectInfoDTO) {
+        try {
+            if (log.isInfoEnabled()) {
+                log.info("SubjectController.getSubjectPage.dto:{}", JSON.toJSONString(subjectInfoDTO));
+            }
+            Preconditions.checkNotNull(subjectInfoDTO.getCategoryId(), "分类id不能为空");
+            Preconditions.checkNotNull(subjectInfoDTO.getLabelId(), "标签id不能为空");
+            SubjectInfoBO subjectInfoBO = SubjectInfoDTOConverter.INSTANCE.convertDTOTOSubjectBO(subjectInfoDTO);
+            PageResult<SubjectInfoBO> pageResult = subjectInfoDomainService.getSubjectPage(subjectInfoBO);
+
+            return Result.success(pageResult);
+        } catch (Exception e) {
+            log.error("SubjectController.getSubjectPage.error:{}", e.getMessage(), e);
+            return Result.fail("获取题目分页数据失败");
         }
     }
 
