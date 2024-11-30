@@ -2,6 +2,8 @@ package com.lb.subject.infra.basic.service;
 
 import com.lb.subject.infra.basic.entity.SubjectMultiple;
 
+import java.util.List;
+
 public interface SubjectMultipleService {
 
     /**
@@ -36,4 +38,18 @@ public interface SubjectMultipleService {
      */
     boolean deleteById(Long id);
 
+    /**
+     * 批量插入
+     *
+     * @param subjectMultipleList
+     */
+    void batchInsert(List<SubjectMultiple> subjectMultipleList);
+
+    /**
+     * 根据条件查询多个主题信息
+     *
+     * @param subjectMultiple 包含查询条件的主题对象
+     * @return 包含查询结果的多个主题信息列表
+     */
+    List<SubjectMultiple> queryByCondition(SubjectMultiple subjectMultiple);
 }

@@ -76,8 +76,8 @@ public interface SubjectInfoDao {
      * 根据条件查询满足条件的记录总数
      *
      * @param subjectInfo 查询条件，包含学科难度等信息
-     * @param categoryId 类别ID，用于筛选符合条件的记录
-     * @param labelId 标签ID，用于筛选符合条件的记录
+     * @param categoryId  类别ID，用于筛选符合条件的记录
+     * @param labelId     标签ID，用于筛选符合条件的记录
      * @return 满足条件的记录总数
      */
     int countByCondition(@Param("subjectInfo") SubjectInfo subjectInfo,
@@ -88,15 +88,15 @@ public interface SubjectInfoDao {
      * 根据条件查询分页数据
      *
      * @param subjectInfo 查询条件，包含学科难度等信息
-     * @param categoryId 类别ID，用于筛选符合条件的数据
-     * @param labelId 标签ID，用于筛选符合条件的数据
-     * @param start 分页开始位置
-     * @param pageSize 每页显示的数据条数
+     * @param categoryId  类别ID，用于筛选符合条件的数据
+     * @param labelId     标签ID，用于筛选符合条件的数据
+     * @param start       分页开始位置
+     * @param pageSize    每页显示的数据条数
      * @return 符合条件的分页数据列表
      */
     List<SubjectInfo> queryPage(@Param("subjectInfo") SubjectInfo subjectInfo,
                                 @Param("categoryId") Long categoryId,
-                                @Param("labelId")Long labelId,
+                                @Param("labelId") Long labelId,
                                 @Param("start") int start,
                                 @Param("pageSize") Integer pageSize);
 

@@ -86,6 +86,30 @@ public class SubjectController {
         }
     }
 
+    @PostMapping("/querySubjectInfo")
+    /**
+     * 查询题目信息
+     *
+     * @param subjectInfoDTO 包含查询题目信息所需条件的DTO对象
+     * @return 返回包含查询结果的Result对象，其中封装了SubjectInfoDTO类型的题目信息
+     */
+    public Result<SubjectInfoDTO> querySubjectInfo(@RequestBody SubjectInfoDTO subjectInfoDTO) {
+        try {
+            if (log.isInfoEnabled()) {
+                log.info("SubjectController.querySubjectInfo.dto:{}", JSON.toJSONString(subjectInfoDTO));
+            }
+            Preconditions.checkNotNull(subjectInfoDTO.getId(), "题目id不能为空");
+            SubjectInfoBO subjectInfoBO = SubjectInfoDTOConverter.INSTANCE.convertDTOTOSubjectBO(subjectInfoDTO);
+            SubjectInfoBO boResult = subjectInfoDomainService.querySubjectInfo(subjectInfoBO);
+            SubjectInfoDTO dto = SubjectInfoDTOConverter.INSTANCE.convertBOTOSubjectInfoDTO(boResult);
+            return Result.success(dto);
+        } catch (Exception e) {
+            log.error("SubjectController.querySubjectInfo.error", e);
+            return Result.fail("查询题目详情失败    ");
+        }
+    }
+
+
 
 
 }

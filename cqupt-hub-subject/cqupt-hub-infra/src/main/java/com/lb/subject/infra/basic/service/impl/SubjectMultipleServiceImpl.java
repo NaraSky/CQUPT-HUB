@@ -6,6 +6,7 @@ import com.lb.subject.infra.basic.service.SubjectMultipleService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service("subjectMultipleService")
 public class SubjectMultipleServiceImpl implements SubjectMultipleService {
@@ -59,4 +60,20 @@ public class SubjectMultipleServiceImpl implements SubjectMultipleService {
     public boolean deleteById(Long id) {
         return this.subjectMultipleDao.deleteById(id) > 0;
     }
+
+    /**
+     * 批量插入数据
+     *
+     * @param subjectMultipleList
+     */
+    @Override
+    public void batchInsert(List<SubjectMultiple> subjectMultipleList) {
+        this.subjectMultipleDao.insertBatch(subjectMultipleList);
+    }
+
+    @Override
+    public List<SubjectMultiple> queryByCondition(SubjectMultiple subjectMultiple) {
+        return this.subjectMultipleDao.queryAllByLimit(subjectMultiple);
+    }
+
 }

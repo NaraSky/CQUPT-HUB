@@ -2,26 +2,32 @@ package com.lb.subject.domain.service.impl;
 
 import com.alibaba.fastjson2.JSON;
 import com.lb.subject.common.entity.PageResult;
+import com.lb.subject.common.enums.IsDeleteFlagEnum;
 import com.lb.subject.domain.convert.SubjectInfoConverter;
 import com.lb.subject.domain.entity.SubjectInfoBO;
+import com.lb.subject.domain.entity.SubjectOptionBO;
 import com.lb.subject.domain.handler.SubjectTypeHandler;
 import com.lb.subject.domain.handler.SubjectTypeHandlerFactory;
 import com.lb.subject.domain.service.SubjectInfoDomainService;
 import com.lb.subject.infra.basic.entity.SubjectInfo;
+import com.lb.subject.infra.basic.entity.SubjectLabel;
 import com.lb.subject.infra.basic.entity.SubjectMapping;
 import com.lb.subject.infra.basic.service.SubjectInfoService;
+import com.lb.subject.infra.basic.service.SubjectLabelService;
 import com.lb.subject.infra.basic.service.SubjectMappingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
-
 
     @Resource
     private SubjectInfoService subjectInfoService;
@@ -30,19 +36,26 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
     private SubjectMappingService subjectMappingService;
 
     @Resource
+    private SubjectLabelService subjectLabelService;
+
+    @Resource
     private SubjectTypeHandlerFactory subjectTypeHandlerFactory;
 
     /**
      * 添加学科信息
      *
      * @param subjectInfoBO 学科信息业务对象，包含要添加的学科信息
+     *
+     * @throws Exception 如果在添加学科信息的过程中出现异常，则抛出该异常
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void add(SubjectInfoBO subjectInfoBO) {
         if (log.isInfoEnabled()) {
             log.info("SubjectInfoDomainServiceImpl.add.bo:{}", JSON.toJSONString(subjectInfoBO));
         }
         SubjectInfo subjectInfo = SubjectInfoConverter.INSTANCE.convertBOTOSubjectInfo(subjectInfoBO);
+        subjectInfo.setIsDeleted(IsDeleteFlagEnum.NORMAL.getCode());
 
         // 插入数据对象到数据库
         subjectInfoService.insert(subjectInfo);
@@ -50,6 +63,7 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
         // 根据学科类型获取对应的处理器
         SubjectTypeHandler subjectTypeHandler = subjectTypeHandlerFactory.getSubjectTypeHandler(subjectInfo.getSubjectType());
 
+        subjectInfoBO.setId(subjectInfo.getId());
         // 调用处理器的添加方法处理业务逻辑
         subjectTypeHandler.add(subjectInfoBO);
 
@@ -59,6 +73,7 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
         // 批量插入学科映射信息到数据库
         subjectMappingService.batchInsert(subjectMappings);
     }
+
 
     /**
      * 获取学科映射关系列表
@@ -81,6 +96,7 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
                 subjectMapping.setSubjectId(subjectInfo.getId());
                 subjectMapping.setCategoryId( Long.valueOf(categoryId));
                 subjectMapping.setLabelId( Long.valueOf(labelId));
+                subjectMapping.setIsDeleted(IsDeleteFlagEnum.NORMAL.getCode());
                 subjectMappings.add(subjectMapping);
             });
         });
@@ -129,6 +145,51 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
 
         return pageResult;
     }
+
+    /**
+     * 根据学科信息业务对象查询学科信息
+     *
+     * @param subjectInfoBO 学科信息业务对象，包含学科ID
+     * @return 返回包含查询结果的学科信息业务对象
+     */
+    @Override
+    public SubjectInfoBO querySubjectInfo(SubjectInfoBO subjectInfoBO) {
+        // 根据学科信息业务对象的ID查询学科信息
+        SubjectInfo subjectInfo = subjectInfoService.queryById(subjectInfoBO.getId());
+
+        // 根据学科类型获取对应的处理器
+        SubjectTypeHandler handler = subjectTypeHandlerFactory.getSubjectTypeHandler(subjectInfo.getSubjectType());
+
+        // 调用处理器的查询方法获取学科选项信息
+        SubjectOptionBO optionBO = handler.query(subjectInfo.getId().intValue());
+
+        // 将学科选项信息和学科信息转换为学科信息业务对象
+        SubjectInfoBO bo = SubjectInfoConverter.INSTANCE.convertOptionAndInfoTOBO(optionBO, subjectInfo);
+
+        // 创建SubjectMapping对象以查询标签ID
+        SubjectMapping subjectMapping = new SubjectMapping();
+        subjectMapping.setSubjectId(subjectInfo.getId());
+        subjectMapping.setIsDeleted(IsDeleteFlagEnum.NORMAL.getCode());
+
+        // 查询与学科关联的标签ID列表
+        List<SubjectMapping> mappingList = subjectMappingService.queryLabelId(subjectMapping);
+
+        // 将标签ID列表转换为Long类型的标签ID列表
+        List<Long> labelIdList = mappingList.stream().map(SubjectMapping::getLabelId).collect(Collectors.toList());
+
+        // 根据标签ID列表批量查询标签信息
+        List<SubjectLabel> labelList = subjectLabelService.batchQueryById(labelIdList);
+
+        // 将标签信息转换为标签名称列表
+        List<String> labelNameList = labelList.stream().map(SubjectLabel::getLabelName).collect(Collectors.toList());
+
+        // 将标签名称列表设置到学科信息业务对象中
+        bo.setLabelName(labelNameList);
+
+        // 返回包含查询结果的学科信息业务对象
+        return bo;
+    }
+
 
 
 

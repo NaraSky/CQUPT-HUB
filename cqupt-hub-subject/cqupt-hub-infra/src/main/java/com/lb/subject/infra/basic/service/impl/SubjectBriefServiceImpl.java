@@ -1,11 +1,14 @@
 package com.lb.subject.infra.basic.service.impl;
 
 import com.lb.subject.infra.basic.entity.SubjectBrief;
+import com.lb.subject.infra.basic.entity.SubjectRadio;
 import com.lb.subject.infra.basic.mapper.SubjectBriefDao;
+import com.lb.subject.infra.basic.mapper.SubjectRadioDao;
 import com.lb.subject.infra.basic.service.SubjectBriefService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service("subjectBriefService")
 public class SubjectBriefServiceImpl implements SubjectBriefService {
@@ -58,4 +61,10 @@ public class SubjectBriefServiceImpl implements SubjectBriefService {
     public boolean deleteById(Long id) {
         return this.subjectBriefDao.deleteById(id) > 0;
     }
+
+    @Override
+    public SubjectBrief queryByCondition(SubjectBrief subjectBrief) {
+        return this.subjectBriefDao.queryAllByLimit(subjectBrief);
+    }
+
 }

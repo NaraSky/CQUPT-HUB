@@ -2,6 +2,7 @@ package com.lb.subject.domain.handler;
 
 import com.lb.subject.common.enums.SubjectInfoTypeEnum;
 import com.lb.subject.domain.entity.SubjectInfoBO;
+import com.lb.subject.domain.entity.SubjectOptionBO;
 
 public interface SubjectTypeHandler {
     /**
@@ -17,4 +18,10 @@ public interface SubjectTypeHandler {
      * @param subjectInfoBO
      */
     void add(SubjectInfoBO subjectInfoBO);
+
+    /**
+     * 实际的题目的插入
+     */
+    SubjectOptionBO query(int subjectId);
+
 }

@@ -1,5 +1,6 @@
 package com.lb.subject.infra.basic.service;
 
+import com.lb.subject.infra.basic.entity.SubjectMultiple;
 import com.lb.subject.infra.basic.entity.SubjectRadio;
 
 import java.util.List;
@@ -42,5 +43,13 @@ public interface SubjectRadioService {
      * @return 是否成功
      */
     boolean deleteById(Long id);
+
+    /**
+     * 根据给定条件查询多个主题信息
+     *
+     * @param subjectRadio 包含查询条件的主题对象
+     * @return 返回一个包含查询结果的多个主题信息列表
+     */
+    List<SubjectRadio> queryByCondition(SubjectRadio subjectRadio);
 
 }

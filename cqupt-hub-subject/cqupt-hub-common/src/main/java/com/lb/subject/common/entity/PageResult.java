@@ -1,12 +1,17 @@
 package com.lb.subject.common.entity;
 
+import lombok.Data;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-@Getter
-public class PageResult<T> {
+@Data
+public class PageResult<T> implements Serializable {
+
+    private static final long serialVersionUID = 276236891529458125L;
+
     private Integer pageNo = 1;
 
     private Integer pageSize = 20;

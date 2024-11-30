@@ -1,6 +1,9 @@
 package com.lb.subject.infra.basic.service;
 
 import com.lb.subject.infra.basic.entity.SubjectBrief;
+import com.lb.subject.infra.basic.entity.SubjectRadio;
+
+import java.util.List;
 
 public interface SubjectBriefService {
 
@@ -35,5 +38,13 @@ public interface SubjectBriefService {
      * @return 是否成功
      */
     boolean deleteById(Long id);
+
+    /**
+     * 根据条件查询主题摘要信息
+     *
+     * @param subjectBrief 主题摘要对象，包含查询条件
+     * @return 满足条件的主题摘要对象
+     */
+    SubjectBrief queryByCondition(SubjectBrief subjectBrief);
 
 }

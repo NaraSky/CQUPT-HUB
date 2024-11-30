@@ -81,57 +81,6 @@
         limit #{pageable.offset}, #{pageable.pageSize}
     </select>
 
-    <!--根据条件查询总行数-->
-    <select id="countByCondition" resultType="java.lang.Integer">
-        <!-- 选择行数 -->
-        select count(1)
-        <!-- 从subject_info和subject_mapping两张表中查询 -->
-        from subject_info a,
-             subject_mapping b
-        <!-- 查询条件 -->
-        where a.subject_difficult = #{subjectInfo.subjectDifficult}
-          <!-- 类别ID条件 -->
-          and b.category_id = #{categoryId}
-          <!-- 标签ID条件 -->
-          and b.label_id = #{labelId}
-          <!-- 筛选未删除的记录 -->
-          and a.is_deleted = 0
-          <!-- 筛选未删除的记录 -->
-          and b.is_deleted = 0
-    </select>
-
-
-    <!--根据条件查询数据-->
-    <select id="queryPage" resultMap="SubjectInfoMap">
-        <!-- 选择需要的字段 -->
-        select id,
-               subject_name,
-               subject_difficult,
-               settle_name,
-               subject_type,
-               subject_score,
-               subject_parse,
-               created_by,
-               created_time,
-               update_by,
-               update_time,
-               is_deleted
-        from subject_info a,
-             subject_mapping b
-        <!-- 条件筛选 -->
-        where a.subject_difficult = #{subjectInfo.subjectDifficult}
-          <!-- 类别ID条件 -->
-          and b.category_id = #{categoryId}
-          <!-- 标签ID条件 -->
-          and b.label_id = #{labelId}
-          <!-- 删除标记条件 -->
-          and a.is_deleted = 0
-          <!-- 删除标记条件 -->
-          and b.is_deleted = 0
-    </select>
-
-
-
     <!--统计总行数-->
     <select id="count" resultType="java.lang.Long">
         select count(1)
@@ -176,15 +125,65 @@
         </where>
     </select>
 
+    <select id="countByCondition" resultType="java.lang.Integer">
+        select count(1)
+        from subject_info a,
+        subject_mapping b
+        where
+        a.id = b.subject_id
+        and b.category_id = #{categoryId}
+        and b.label_id = #{labelId}
+        and a.is_deleted = 0
+        and b.is_deleted = 0
+        <if test="subjectInfo.subjectDifficult != null">
+            and a.subject_difficult = #{subjectInfo.subjectDifficult}
+        </if>
+        <if test="subjectInfo.subjectType != null">
+            and a.subject_type = #{subjectInfo.subjectType}
+        </if>
+    </select>
+
+    <select id="queryPage" resultMap="SubjectInfoMap">
+        select a.id,
+        a.subject_name,
+        a.subject_difficult,
+        a.settle_name,
+        a.subject_type,
+        a.subject_score,
+        a.subject_parse,
+        a.created_by,
+        a.created_time,
+        a.update_by,
+        a.update_time,
+        a.is_deleted
+        from subject_info a,
+        subject_mapping b
+        where
+        a.id = b.subject_id
+        and b.category_id = #{categoryId}
+        and b.label_id = #{labelId}
+        and a.is_deleted = 0
+        and b.is_deleted = 0
+        <if test="subjectInfo.subjectDifficult != null">
+            and a.subject_difficult = #{subjectInfo.subjectDifficult}
+        </if>
+        <if test="subjectInfo.subjectType != null">
+            and a.subject_type = #{subjectInfo.subjectType}
+        </if>
+        limit #{start},#{pageSize}
+    </select>
+
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
         insert into subject_info(subject_name, subject_difficult, settle_name, subject_type, subject_score,
-                                 subject_parse, created_by, created_time, update_by, update_time, is_deleted)
+        subject_parse, created_by, created_time, update_by, update_time, is_deleted)
         values (#{subjectName}, #{subjectDifficult}, #{settleName}, #{subjectType}, #{subjectScore}, #{subjectParse},
-                #{createdBy}, #{createdTime}, #{updateBy}, #{updateTime}, #{isDeleted})
+        #{createdBy}, #{createdTime}, #{updateBy}, #{updateTime}, #{isDeleted})
     </insert>
 
-    <!--新增部分列-->
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
         insert into subject_info(subject_name, subject_difficult, settle_name, subject_type, subject_score,
         subject_parse, created_by, created_time, update_by, update_time, is_deleted)
@@ -196,7 +195,6 @@
         </foreach>
     </insert>
 
-    <!--新增部分列(存在则更新,不存在则插入)-->
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
         insert into subject_info(subject_name, subject_difficult, settle_name, subject_type, subject_score,
         subject_parse, created_by, created_time, update_by, update_time, is_deleted)
@@ -264,7 +262,7 @@
     <!--通过主键删除-->
     <delete id="deleteById">
         delete
-        from subject_info
+        from `subject_info`
         where id = #{id}
     </delete>
 

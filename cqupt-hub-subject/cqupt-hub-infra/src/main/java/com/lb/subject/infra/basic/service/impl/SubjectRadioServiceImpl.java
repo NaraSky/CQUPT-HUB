@@ -6,6 +6,7 @@ import com.lb.subject.infra.basic.service.SubjectRadioService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 
 @Service("subjectRadioService")
@@ -63,5 +64,11 @@ public class SubjectRadioServiceImpl implements SubjectRadioService {
     @Override
     public boolean deleteById(Long id) {
         return this.subjectRadioDao.deleteById(id) > 0;
+    }
+
+    @Override
+    public List<SubjectRadio> queryByCondition(SubjectRadio subjectRadio) {
+        List<SubjectRadio> subjectRadioList = subjectRadioDao.queryAllByLimit(subjectRadio);
+        return subjectRadioList;
     }
 }

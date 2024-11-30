@@ -57,7 +57,6 @@
                 and is_deleted = #{isDeleted}
             </if>
         </where>
-        limit #{pageable.offset}, #{pageable.pageSize}
     </select>
 
     <!--统计总行数-->
@@ -98,7 +97,6 @@
         values (#{subjectId}, #{isCorrect}, #{createdBy}, #{createdTime}, #{updateBy}, #{updateTime}, #{isDeleted})
     </insert>
 
-    <!--批量新增-->
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
         insert into subject_judge(subject_id, is_correct, created_by, created_time, update_by, update_time, is_deleted)
         values
@@ -108,7 +106,6 @@
         </foreach>
     </insert>
 
-    <!--批量新增或修改-->
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
         insert into subject_judge(subject_id, is_correct, created_by, created_time, update_by, update_time, is_deleted)
         values
@@ -161,5 +158,6 @@
         from subject_judge
         where id = #{id}
     </delete>
+
 
 </mapper>
