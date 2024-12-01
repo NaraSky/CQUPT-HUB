@@ -23,7 +23,7 @@ public class SubjectCategory implements Serializable {
     /**
      * 分类类型
      */
-    private Byte categoryType;
+    private Integer categoryType;
 
     /**
      * 图标连接

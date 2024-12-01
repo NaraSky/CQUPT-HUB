@@ -6,6 +6,7 @@ import com.lb.subject.infra.basic.service.SubjectLabelService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 
 @Service("subjectLabelService")
@@ -67,5 +68,10 @@ public class SubjectLabelServiceImpl implements SubjectLabelService {
     @Override
     public List<SubjectLabel> batchQueryById(List<Long> labelIdList) {
         return this.subjectLabelDao.batchQueryById(labelIdList);
+    }
+
+    @Override
+    public List<SubjectLabel> queryByCondition(SubjectLabel subjectLabel) {
+        return this.subjectLabelDao.queryByCondition(subjectLabel);
     }
 }

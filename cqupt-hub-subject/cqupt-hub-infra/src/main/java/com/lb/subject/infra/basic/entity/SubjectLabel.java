@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 public class SubjectLabel implements Serializable {
 
-    private static final long serialVersionUID = 687023315859726820L;
+    private static final long serialVersionUID = 6097631398871966294L;
 
     /**
      * 主键
@@ -22,6 +22,10 @@ public class SubjectLabel implements Serializable {
      * 排序
      */
     private Integer sortNum;
+    /**
+     * 分类id
+     */
+    private Long categoryId;
     /**
      * 创建人
      */
