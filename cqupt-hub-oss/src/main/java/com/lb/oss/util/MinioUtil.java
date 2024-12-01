@@ -23,15 +23,21 @@ public class MinioUtil {
     @Resource
     private MinioClient minioClient;
 
-    public void createBucket(String bucketName) throws Exception {
-        boolean bucketExists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
-        if (!bucketExists) {
-            minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
+    /**
+     * 创建bucket桶
+     */
+    public void createBucket(String bucket) throws Exception {
+        boolean exists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucket).build());
+        if (!exists) {
+            minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucket).build());
         }
     }
 
-    public void uploadFile(InputStream inputStream, String bucketName, String objectName) throws Exception {
-        minioClient.putObject(PutObjectArgs.builder().bucket(bucketName).object(objectName)
+    /**
+     * 上传文件
+     */
+    public void uploadFile(InputStream inputStream, String bucket, String objectName) throws Exception {
+        minioClient.putObject(PutObjectArgs.builder().bucket(bucket).object(objectName)
                 .stream(inputStream, -1, Integer.MAX_VALUE).build());
     }
 
@@ -47,37 +53,19 @@ public class MinioUtil {
      * 列出当前桶及文件
      */
     public List<FileInfo> getAllFile(String bucket) throws Exception {
-        // 调用MinIO客户端的listObjects方法列出桶中的对象
         Iterable<Result<Item>> results = minioClient.listObjects(
                 ListObjectsArgs.builder().bucket(bucket).build());
-
-        // 创建一个LinkedList来存储FileInfo对象
         List<FileInfo> fileInfoList = new LinkedList<>();
-
         for (Result<Item> result : results) {
-            // 创建一个FileInfo对象
             FileInfo fileInfo = new FileInfo();
-
-            // 从结果中获取Item对象
             Item item = result.get();
-
-            // 设置文件名
             fileInfo.setFileName(item.objectName());
-
-            // 设置是否是目录
             fileInfo.setDirectoryFlag(item.isDir());
-
-            // 设置ETag值
             fileInfo.setEtag(item.etag());
-
-            // 将FileInfo对象添加到列表中
             fileInfoList.add(fileInfo);
         }
-
-        // 返回FileInfo列表
         return fileInfoList;
     }
-
 
     /**
      * 下载文件
@@ -105,5 +93,4 @@ public class MinioUtil {
                 RemoveObjectArgs.builder().bucket(bucket).object(objectName).build()
         );
     }
-
 }

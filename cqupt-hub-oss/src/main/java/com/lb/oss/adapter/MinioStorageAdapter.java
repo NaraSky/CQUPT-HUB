@@ -2,6 +2,7 @@ package com.lb.oss.adapter;
 
 import com.lb.oss.entity.FileInfo;
 import com.lb.oss.util.MinioUtil;
+import lombok.SneakyThrows;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -14,12 +15,14 @@ public class MinioStorageAdapter implements StorageAdapter {
     private MinioUtil minioUtil;
 
     @Override
-    public void createBucket(String bucket) throws Exception {
+    @SneakyThrows
+    public void createBucket(String bucket) {
         minioUtil.createBucket(bucket);
     }
 
     @Override
-    public void uploadFile(MultipartFile uploadFile, String bucket, String objectName) throws Exception {
+    @SneakyThrows
+    public void uploadFile(MultipartFile uploadFile, String bucket, String objectName) {
         minioUtil.createBucket(bucket);
         if (objectName != null) {
             minioUtil.uploadFile(uploadFile.getInputStream(), bucket, objectName + "/" + uploadFile.getName());
@@ -29,28 +32,32 @@ public class MinioStorageAdapter implements StorageAdapter {
     }
 
     @Override
-    public List<String> getAllBucket() throws Exception {
+    @SneakyThrows
+    public List<String> getAllBucket() {
         return minioUtil.getAllBucket();
     }
 
     @Override
-    public List<FileInfo> getAllFile(String bucket) throws Exception {
+    @SneakyThrows
+    public List<FileInfo> getAllFile(String bucket) {
         return minioUtil.getAllFile(bucket);
     }
 
     @Override
-    public InputStream downLoad(String bucket, String objectName) throws Exception {
+    @SneakyThrows
+    public InputStream downLoad(String bucket, String objectName) {
         return minioUtil.downLoad(bucket, objectName);
     }
 
     @Override
-    public void deleteBucket(String bucket) throws Exception {
+    @SneakyThrows
+    public void deleteBucket(String bucket) {
         minioUtil.deleteBucket(bucket);
     }
 
     @Override
-    public void deleteObject(String bucket, String objectName) throws Exception {
+    @SneakyThrows
+    public void deleteObject(String bucket, String objectName) {
         minioUtil.deleteObject(bucket, objectName);
     }
-
 }
