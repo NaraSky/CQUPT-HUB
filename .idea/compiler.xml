@@ -7,15 +7,28 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="cqupt-hub-infra" />
-        <module name="cqupt-hub-application-job" />
+        <module name="cqupt-hub-auth-common" />
+        <module name="cqupt-hub-auth-application-controller" />
+        <module name="cqupt-hub-auth-domain" />
         <module name="cqupt-hub-common" />
         <module name="cqupt-hub-application-controller" />
+        <module name="cqupt-hub-oss" />
+        <module name="cqupt-hub-auth-application-mq" />
+        <module name="cqupt-hub-auth-starter" />
+        <module name="cqupt-hub-infra" />
+        <module name="cqupt-hub-application-job" />
+        <module name="cqupt-hub-auth-infra" />
+        <module name="cqupt-hub-auth-api" />
         <module name="cqupt-hub-starter" />
         <module name="cqupt-hub-application-mq" />
+        <module name="cqupt-hub-gateway" />
         <module name="cqupt-hub-subject-api" />
+        <module name="cqupt-hub-auth-application-job" />
         <module name="cqupt-hub-domain" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="demo" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
