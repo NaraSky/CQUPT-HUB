@@ -26,16 +26,6 @@ public class PageResult<T> implements Serializable {
 
     private Integer end = 0;
 
-    // 设置当前页码
-    public void setPageNo(Integer pageNo) {
-        this.pageNo = pageNo;
-    }
-
-    // 设置每页显示的记录数
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
-    }
-
     public void setTotal(Integer total) {
         if (total == null || total < 0) {
             throw new IllegalArgumentException("Total must be a non-null positive integer.");

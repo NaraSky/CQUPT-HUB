@@ -24,7 +24,7 @@ public class FileService {
     /**
      * 获取文件路径
      */
-    public String getUrl(String bucketName,String objectName) {
+    public String getUrl(String bucketName,String objectName) throws Exception {
         return storageAdapter.getUrl(bucketName,objectName);
     }
 

@@ -23,6 +23,11 @@
             <artifactId>cqupt-hub-auth-infra</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.lb</groupId>
+            <artifactId>cqupt-hub-auth-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>
