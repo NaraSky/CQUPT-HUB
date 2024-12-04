@@ -43,5 +43,10 @@ public interface StorageAdapter {
      */
     void deleteObject(String bucket, String objectName) throws Exception;
 
+    /**
+     * 获取文件url
+     */
+    String getUrl(String bucket, String objectName) throws Exception;
+
 
 }
