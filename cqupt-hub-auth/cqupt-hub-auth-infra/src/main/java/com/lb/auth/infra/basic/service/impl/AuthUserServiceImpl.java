@@ -40,11 +40,10 @@ public class AuthUserServiceImpl implements AuthUserService {
      * @param authUser 实例对象
      * @return 实例对象
      */
-    @Override
-    public AuthUser update(AuthUser authUser) {
-        this.authUserDao.update(authUser);
-        return this.queryById(authUser.getId());
+    public Integer update(AuthUser authUser) {
+        return this.authUserDao.update(authUser);
     }
+
 
     /**
      * 通过主键删除数据

@@ -9,4 +9,13 @@ public interface AuthUserDomainService {
      */
     Boolean register(AuthUserBO authUserBO);
 
+    /**
+     * 更新用户信息
+     */
+    Boolean update(AuthUserBO authUserBO);
+
+    /**
+     * 更新用户信息
+     */
+    Boolean delete(AuthUserBO authUserBO);
 }
