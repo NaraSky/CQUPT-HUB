@@ -21,4 +21,12 @@ public class FileService {
         return storageAdapter.getAllBucket();
     }
 
+    /**
+     * 获取文件路径
+     */
+    public String getUrl(String bucketName,String objectName) {
+        return storageAdapter.getUrl(bucketName,objectName);
+    }
+
+
 }

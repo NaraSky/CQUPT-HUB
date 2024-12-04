@@ -32,4 +32,10 @@ public class FileController {
         return storageType;
     }
 
+    @RequestMapping("/getUrl")
+    public String getUrl(String bucketName,String objectName) throws Exception {
+        return fileService.getUrl(bucketName,objectName);
+    }
+
+
 }
