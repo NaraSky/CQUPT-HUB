@@ -4,21 +4,69 @@ spring:
   cloud:
     gateway:
       routes:
+        # 定义oss路由
         - id: oss
           uri: lb://cqupt-hub-oss
           predicates:
+            # 匹配路径为/oss/**的请求
             - Path=/oss/**
           filters:
+            # 移除请求路径的第一个部分
             - StripPrefix=1
-        - id: cqupt-hub-auth
+        # 定义auth路由
+        - id: auth
           uri: lb://cqupt-hub-auth
           predicates:
+            # 匹配路径为/auth/**的请求
             - Path=/auth/**
           filters:
+            # 移除请求路径的第一个部分
             - StripPrefix=1
-        - id: cqupt-hub-subject
+        # 定义subject路由
+        - id: subject
           uri: lb://cqupt-hub-subject
           predicates:
+            # 匹配路径为/subject/**的请求
             - Path=/subject/**
           filters:
+            # 移除请求路径的第一个部分
             - StripPrefix=1
+  redis:
+    # Redis主机地址
+    host: 127.0.0.1
+    # Redis端口
+    port: 6379
+    # Redis密码
+    password: redis_Z4eFFT
+    # 使用的数据库索引
+    database: 0
+    # 连接超时时间
+    timeout: 1000ms
+    lettuce:
+      pool:
+        # 连接池最大活跃连接数
+        max-active: 100
+        # 连接池最大等待时间
+        max-wait: 100ms
+        # 连接池中的最大空闲连接数
+        max-idle: 10
+        # 连接池中的最小空闲连接数
+        min-idle: 0
+
+
+sa-token:
+  # token 名称（同时也是 cookie 名称）
+  token-name: satoken
+  # token 有效期（单位：秒） 默认30天，-1 代表永久有效
+  timeout: 2592000
+  # token 最低活跃频率（单位：秒），如果 token 超过此时间没有访问系统就会被冻结，默认-1 代表不限制，永不冻结
+  active-timeout: -1
+  # 是否允许同一账号多地同时登录 （为 true 时允许一起登录, 为 false 时新登录挤掉旧登录）
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个 token （为 true 时所有登录共用一个 token, 为 false 时每次登录新建一个 token）
+  is-share: true
+  # token 风格（默认可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
+  token-style: random-32
+  # 是否输出操作日志
+  is-log: true
+  token-prefix: ZhiYU
