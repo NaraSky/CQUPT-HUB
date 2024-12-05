@@ -1,8 +1,8 @@
 package com.lb.auth.infra.basic.service;
 
-import com.lb.auth.infra.basic.entity.AuthRole;
+import com.lb.auth.infra.basic.entity.AuthPermission;
 
-public interface AuthRoleService {
+public interface AuthPermissionService {
 
     /**
      * 通过ID查询单条数据
@@ -10,23 +10,24 @@ public interface AuthRoleService {
      * @param id 主键
      * @return 实例对象
      */
-    AuthRole queryById(Long id);
+    AuthPermission queryById(Long id);
+
 
     /**
      * 新增数据
      *
-     * @param authRole 实例对象
+     * @param authPermission 实例对象
      * @return 实例对象
      */
-    int insert(AuthRole authRole);
+    int insert(AuthPermission authPermission);
 
     /**
      * 修改数据
      *
-     * @param authRole 实例对象
+     * @param authPermission 实例对象
      * @return 实例对象
      */
-    int update(AuthRole authRole);
+    int update(AuthPermission authPermission);
 
     /**
      * 通过主键删除数据
@@ -36,5 +37,4 @@ public interface AuthRoleService {
      */
     boolean deleteById(Long id);
 
-    AuthRole queryByCondition(AuthRole authRole);
 }

@@ -3,13 +3,19 @@ package com.lb.auth.domain.service.impl;
 import cn.dev33.satoken.secure.SaSecureUtil;
 import com.lb.auth.common.enums.AuthUserStatusEnum;
 import com.lb.auth.common.enums.IsDeletedFlagEnum;
+import com.lb.auth.domain.constants.AuthConstant;
 import com.lb.auth.domain.convert.AuthUserBOConverter;
 import com.lb.auth.domain.entity.AuthUserBO;
 import com.lb.auth.domain.service.AuthUserDomainService;
+import com.lb.auth.infra.basic.entity.AuthRole;
 import com.lb.auth.infra.basic.entity.AuthUser;
+import com.lb.auth.infra.basic.entity.AuthUserRole;
+import com.lb.auth.infra.basic.service.AuthRoleService;
+import com.lb.auth.infra.basic.service.AuthUserRoleService;
 import com.lb.auth.infra.basic.service.AuthUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -19,6 +25,12 @@ public class AuthUserDomainServiceImpl implements AuthUserDomainService {
 
     @Resource
     private AuthUserService authUserService;
+
+    @Resource
+    private AuthRoleService authRoleService;
+
+    @Resource
+    private AuthUserRoleService authUserRoleService;
 
     private final String salt = "cqupt";
 
@@ -30,16 +42,47 @@ public class AuthUserDomainServiceImpl implements AuthUserDomainService {
      * @throws Exception 如果在注册过程中发生异常，则抛出异常
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean register(AuthUserBO authUserBO) {
+        // 将用户业务对象转换为实体对象
         AuthUser authUser = AuthUserBOConverter.INSTANCE.convertBOToEntity(authUserBO);
+        // 设置用户密码为加盐后的MD5值
         authUser.setPassword(SaSecureUtil.md5BySalt(authUser.getPassword(), this.salt));
+        // 设置用户状态为开放
         authUser.setStatus(AuthUserStatusEnum.OPEN.getCode());
+        // 设置用户未被删除标志
         authUser.setIsDeleted(IsDeletedFlagEnum.UN_DELETED.getCode());
+        // 插入用户数据，并返回插入记录数
         Integer count = authUserService.insert(authUser);
-        //建立一个初步的角色的关联
-        //要把当前用户的角色和权限都刷到我们的redis里
+
+        // 建立一个初步的角色的关联
+        // 创建一个新的角色对象
+        AuthRole authRole = new AuthRole();
+        // 设置角色键为普通用户
+        authRole.setRoleKey(AuthConstant.NORMAL_USER);
+        // 查询符合条件的角色对象
+        AuthRole role = authRoleService.queryByCondition(authRole);
+        // 获取角色ID
+        Long roleId = role.getId();
+        // 获取用户ID
+        Long userId = authUser.getId();
+
+        // 创建一个新的用户角色关联对象
+        AuthUserRole authUserRole = new AuthUserRole();
+        // 设置用户ID
+        authUserRole.setUserId(userId);
+        // 设置角色ID
+        authUserRole.setRoleId(roleId);
+        // 设置未被删除标志
+        authUserRole.setIsDeleted(IsDeletedFlagEnum.UN_DELETED.getCode());
+        // 插入用户角色关联数据
+        authUserRoleService.insert(authUserRole);
+
+        // 要把当前用户的角色和权限都刷到我们的redis里
+        // 如果插入的用户记录数大于0，表示注册成功
         return count > 0;
     }
+
 
     /**
      * 更新用户信息
