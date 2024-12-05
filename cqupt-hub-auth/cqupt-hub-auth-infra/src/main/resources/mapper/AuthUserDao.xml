@@ -23,22 +23,8 @@
 
     <!--查询单个-->
     <select id="queryById" resultMap="AuthUserMap">
-        select id,
-               user_name,
-               nick_name,
-               email,
-               phone,
-               password,
-               sex,
-               avatar,
-               status,
-               introduce,
-               ext_json,
-               created_by,
-               created_time,
-               update_by,
-               update_time,
-               is_deleted
+        select
+            id, user_name, nick_name, email, phone, password, sex, avatar, status, introduce, ext_json, created_by, created_time, update_by, update_time, is_deleted
         from auth_user
         where id = #{id}
     </select>
@@ -160,31 +146,26 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into auth_user(user_name, nick_name, email, phone, password, sex, avatar, status, introduce, ext_json,
-                              created_by, created_time, update_by, update_time, is_deleted)
-        values (#{userName}, #{nickName}, #{email}, #{phone}, #{password}, #{sex}, #{avatar}, #{status}, #{introduce},
-                #{extJson}, #{createdBy}, #{createdTime}, #{updateBy}, #{updateTime}, #{isDeleted})
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into auth_user(user_name, nick_name, email, phone, password, sex, avatar, status, introduce, ext_json, created_by, created_time, update_by, update_time, is_deleted)
+        values (#{userName}, #{nickName}, #{email}, #{phone}, #{password}, #{sex}, #{avatar}, #{status}, #{introduce}, #{extJson}, #{createdBy}, #{createdTime}, #{updateBy}, #{updateTime}, #{isDeleted})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into auth_user(user_name, nick_name, email, phone, password, sex, avatar, status, introduce, ext_json,
-        created_by, created_time, update_by, update_time, is_deleted)
+        insert into auth_user(user_name, nick_name, email, phone, password, sex, avatar, status, introduce, ext_json, created_by, created_time, update_by, update_time, is_deleted)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.userName}, #{entity.nickName}, #{entity.email}, #{entity.phone}, #{entity.password},
-            #{entity.sex}, #{entity.avatar}, #{entity.status}, #{entity.introduce}, #{entity.extJson},
-            #{entity.createdBy}, #{entity.createdTime}, #{entity.updateBy}, #{entity.updateTime}, #{entity.isDeleted})
+            (#{entity.userName}, #{entity.nickName}, #{entity.email}, #{entity.phone}, #{entity.password}, #{entity.sex}, #{entity.avatar}, #{entity.status}, #{entity.introduce}, #{entity.extJson}, #{entity.createdBy}, #{entity.createdTime}, #{entity.updateBy}, #{entity.updateTime}, #{entity.isDeleted})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into auth_user(user_name, nick_name, email, phone, password, sex, avatar, status, introduce, ext_json,
-        created_by, created_time, update_by, update_time, is_deleted)
+        insert into auth_user(user_name, nick_name, email, phone, password, sex, avatar, status, introduce, ext_json, created_by, created_time, update_by, update_time, is_deleted)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.userName}, #{entity.nickName}, #{entity.email}, #{entity.phone}, #{entity.password},
-            #{entity.sex}, #{entity.avatar}, #{entity.status}, #{entity.introduce}, #{entity.extJson},
-            #{entity.createdBy}, #{entity.createdTime}, #{entity.updateBy}, #{entity.updateTime}, #{entity.isDeleted})
+            (#{entity.userName}, #{entity.nickName}, #{entity.email}, #{entity.phone}, #{entity.password}, #{entity.sex}, #{entity.avatar}, #{entity.status}, #{entity.introduce}, #{entity.extJson}, #{entity.createdBy}, #{entity.createdTime}, #{entity.updateBy}, #{entity.updateTime}, #{entity.isDeleted})
         </foreach>
         on duplicate key update
         user_name = values(user_name),
@@ -259,9 +240,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete
-        from auth_user
-        where id = #{id}
+        delete from auth_user where id = #{id}
     </delete>
 
 </mapper>
