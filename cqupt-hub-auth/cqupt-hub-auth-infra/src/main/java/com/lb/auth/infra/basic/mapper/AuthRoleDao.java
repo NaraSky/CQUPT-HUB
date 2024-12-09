@@ -71,4 +71,14 @@ public interface AuthRoleDao {
      * @return 影响行数
      */
     int deleteById(Long id);
+
+
+    /**
+     * 根据角色ID列表查询角色信息
+     *
+     * @param roleIdList 角色ID列表
+     * @return 返回查询到的角色信息列表
+     */
+    List<AuthRole> queryByRoleList(@Param("list") List<Long> roleIdList);
+
 }

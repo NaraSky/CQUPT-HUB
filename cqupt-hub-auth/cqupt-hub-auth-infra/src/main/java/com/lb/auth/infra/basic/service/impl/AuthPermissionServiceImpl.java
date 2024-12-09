@@ -6,6 +6,7 @@ import com.lb.auth.infra.basic.service.AuthPermissionService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service("authPermissionService")
 public class AuthPermissionServiceImpl implements AuthPermissionService {
@@ -56,4 +57,16 @@ public class AuthPermissionServiceImpl implements AuthPermissionService {
     public boolean deleteById(Long id) {
         return this.authPermissionDao.deleteById(id) > 0;
     }
+
+    /**
+     * 根据角色ID列表查询权限信息
+     *
+     * @param roleIdList 角色ID列表
+     * @return 返回与给定角色ID列表对应的权限信息列表
+     */
+    @Override
+    public List<AuthPermission> queryByRoleList(List<Long> roleIdList) {
+        return this.authPermissionDao.queryByRoleList(roleIdList);
+    }
+
 }

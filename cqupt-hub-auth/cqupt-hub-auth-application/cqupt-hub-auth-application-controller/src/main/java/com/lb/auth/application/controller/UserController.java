@@ -1,7 +1,9 @@
 package com.lb.auth.application.controller;
 
 import cn.dev33.satoken.SaManager;
+import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.dev33.satoken.util.SaResult;
 import com.alibaba.fastjson2.JSON;
 import com.google.common.base.Preconditions;
 import com.lb.auth.application.dto.AuthUserDTO;
@@ -35,9 +37,8 @@ public class UserController {
     @RequestMapping("/register")
     public Result<Boolean> register(@RequestBody AuthUserDTO authUserDTO) {
         try {
-            if (log.isDebugEnabled()) {
-                // 避免打印敏感信息，如密码
-                log.debug("register authUserDTO with username={}", authUserDTO.getUserName());
+            if (log.isInfoEnabled()) {
+                log.info("UserController.register.dto:{}", JSON.toJSONString(authUserDTO));
             }
             checkUserInfo(authUserDTO);
             AuthUserBO authUserBO = AuthUserDTOConverter.INSTANCE.convertDTOToBO(authUserDTO);
@@ -124,4 +125,24 @@ public class UserController {
             return Result.fail("启用/禁用用户信息失败");
         }
     }
+
+    // 测试登录，浏览器访问： http://localhost:8081/user/doLogin?username=zhang&password=123456
+    @RequestMapping("doLogin")
+    public SaResult doLogin(String username, String password) {
+        // 此处仅作模拟示例，真实项目需要从数据库中查询数据进行比对
+        if ("zhang".equals(username) && "123456".equals(password)) {
+            StpUtil.login("ZhiYu");
+            SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
+            // 第3步，返回给前端
+            return SaResult.data(tokenInfo);
+        }
+        return SaResult.error("登录失败");
+    }
+
+    // 查询登录状态，浏览器访问： http://localhost:8081/user/isLogin
+    @RequestMapping("isLogin")
+    public String isLogin() {
+        return "当前会话是否登录：" + StpUtil.isLogin();
+    }
+
 }

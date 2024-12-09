@@ -40,4 +40,12 @@ public interface AuthRolePermissionService {
      */
     boolean deleteById(Long id);
 
+    /**
+     * 根据条件查询角色权限信息
+     *
+     * @param authRolePermission 查询条件对象，包含需要查询的角色权限信息
+     * @return 返回一个包含查询到的角色权限信息的列表
+     */
+    List<AuthRolePermission> queryByCondition(AuthRolePermission authRolePermission);
+
 }

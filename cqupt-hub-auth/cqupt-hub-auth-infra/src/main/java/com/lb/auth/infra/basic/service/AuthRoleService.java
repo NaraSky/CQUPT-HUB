@@ -2,6 +2,8 @@ package com.lb.auth.infra.basic.service;
 
 import com.lb.auth.infra.basic.entity.AuthRole;
 
+import java.util.List;
+
 public interface AuthRoleService {
 
     /**
@@ -37,4 +39,12 @@ public interface AuthRoleService {
     boolean deleteById(Long id);
 
     AuthRole queryByCondition(AuthRole authRole);
+
+    /**
+     * 根据角色ID列表查询角色信息列表
+     *
+     * @param roleIdList 角色ID列表
+     * @return 返回与给定角色ID列表对应的角色信息列表
+     */
+    List<AuthRole> queryByRoleList(List<Long> roleIdList);
 }

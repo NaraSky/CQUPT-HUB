@@ -6,6 +6,7 @@ import com.lb.auth.infra.basic.service.AuthRoleService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service("authRoleService")
 public class AuthRoleServiceImpl implements AuthRoleService {
@@ -57,8 +58,26 @@ public class AuthRoleServiceImpl implements AuthRoleService {
         return this.authRoleDao.deleteById(id) > 0;
     }
 
+    /**
+     * 根据条件查询角色信息
+     *
+     * @param authRole 查询条件对象，包含需要查询的角色信息
+     * @return 返回一个符合查询条件的角色对象
+     */
     @Override
     public AuthRole queryByCondition(AuthRole authRole) {
         return this.authRoleDao.queryAllByLimit(authRole);
     }
+
+    /**
+     * 根据角色ID列表查询角色信息列表
+     *
+     * @param roleIdList 角色ID列表
+     * @return 返回与给定角色ID列表对应的角色信息列表
+     */
+    @Override
+    public List<AuthRole> queryByRoleList(List<Long> roleIdList) {
+        return authRoleDao.queryByRoleList(roleIdList);
+    }
+
 }
