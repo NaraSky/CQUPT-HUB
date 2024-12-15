@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="cqupt-hub-auth-common" />
+        <module name="cqupt-hub-wx" />
         <module name="cqupt-hub-auth-application-controller" />
         <module name="cqupt-hub-auth-domain" />
         <module name="cqupt-hub-common" />
