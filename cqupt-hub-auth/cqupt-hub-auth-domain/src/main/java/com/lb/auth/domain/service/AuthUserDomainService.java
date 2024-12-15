@@ -1,5 +1,6 @@
 package com.lb.auth.domain.service;
 
+import cn.dev33.satoken.stp.SaTokenInfo;
 import com.lb.auth.domain.entity.AuthUserBO;
 
 public interface AuthUserDomainService {
@@ -18,4 +19,6 @@ public interface AuthUserDomainService {
      * 更新用户信息
      */
     Boolean delete(AuthUserBO authUserBO);
+
+    SaTokenInfo doLogin(String validCode);
 }

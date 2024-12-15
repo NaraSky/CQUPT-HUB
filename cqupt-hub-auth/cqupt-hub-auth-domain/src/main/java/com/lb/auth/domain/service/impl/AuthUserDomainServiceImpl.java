@@ -1,6 +1,8 @@
 package com.lb.auth.domain.service.impl;
 
 import cn.dev33.satoken.secure.SaSecureUtil;
+import cn.dev33.satoken.stp.SaTokenInfo;
+import cn.dev33.satoken.stp.StpUtil;
 import com.google.gson.Gson;
 import com.lb.auth.common.enums.AuthUserStatusEnum;
 import com.lb.auth.common.enums.IsDeletedFlagEnum;
@@ -12,6 +14,7 @@ import com.lb.auth.domain.service.AuthUserDomainService;
 import com.lb.auth.infra.basic.entity.*;
 import com.lb.auth.infra.basic.service.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +51,8 @@ public class AuthUserDomainServiceImpl implements AuthUserDomainService {
 
     private String authRolePrefix = "auth.role";
 
+    private static final String LOGIN_PREFIX = "loginCode";
+
     /**
      * 用户注册方法
      *
@@ -69,7 +74,10 @@ public class AuthUserDomainServiceImpl implements AuthUserDomainService {
     public Boolean register(AuthUserBO authUserBO) {
         AuthUser authUser = AuthUserBOConverter.INSTANCE.convertBOToEntity(authUserBO);
         // 设置密码（使用MD5加盐算法加密）
-        authUser.setPassword(SaSecureUtil.md5BySalt(authUserBO.getPassword(), this.salt));
+        if (StringUtils.isNotBlank(authUser.getPassword())) {
+            authUser.setPassword(SaSecureUtil.md5BySalt(authUser.getPassword(), salt));
+        }
+
         // 设置用户状态为开启
         authUser.setStatus(AuthUserStatusEnum.OPEN.getCode());
         // 设置用户删除标识为未删除
@@ -145,5 +153,44 @@ public class AuthUserDomainServiceImpl implements AuthUserDomainService {
         //有任何的更新，都要与缓存进行同步的修改
         return count > 0;
     }
+
+    /**
+     * 执行登录操作
+     *
+     * @param validCode 验证码
+     * @return 登录成功后返回的Token信息，如果登录失败则返回null
+     */
+    @Override
+    public SaTokenInfo doLogin(String validCode) {
+        // 构建登录键，键名为"LOGIN_PREFIX"加上验证码
+        String loginKey = redisUtil.buildKey(LOGIN_PREFIX, validCode);
+
+        // 从Redis中获取与登录键对应的openId
+        String openId = redisUtil.get(loginKey);
+
+        // 如果openId为空或仅包含空白字符，则返回null
+        if (StringUtils.isBlank(openId)) {
+            return null;
+        }
+
+        // 创建一个AuthUserBO对象
+        AuthUserBO authUserBO = new AuthUserBO();
+
+        // 设置AuthUserBO对象的用户名属性为openId
+        authUserBO.setUserName(openId);
+
+        // 调用register方法注册用户
+        this.register(authUserBO);
+
+        // 使用StpUtil工具类进行登录操作，参数为openId
+        StpUtil.login(openId);
+
+        // 获取当前登录用户的Token信息
+        SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
+
+        // 返回Token信息
+        return tokenInfo;
+    }
+
 
 }
