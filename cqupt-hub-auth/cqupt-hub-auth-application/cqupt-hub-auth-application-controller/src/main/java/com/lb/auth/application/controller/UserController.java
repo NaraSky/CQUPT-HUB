@@ -1,13 +1,11 @@
 package com.lb.auth.application.controller;
 
-import cn.dev33.satoken.SaManager;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.dev33.satoken.util.SaResult;
 import com.alibaba.fastjson2.JSON;
 import com.google.common.base.Preconditions;
 import com.lb.auth.application.dto.AuthUserDTO;
-import com.lb.auth.application.mapper.AuthUserDTOConverter;
+import com.lb.auth.application.converter.AuthUserDTOConverter;
 import com.lb.auth.common.entity.Result;
 import com.lb.auth.domain.entity.AuthUserBO;
 import com.lb.auth.domain.service.AuthUserDomainService;
@@ -81,6 +79,48 @@ public class UserController {
         } catch (Exception e) {
             log.error("UserController.update.error:{}", e.getMessage(), e);
             return Result.fail("更新用户信息失败");
+        }
+    }
+
+    /**
+     * 获取用户信息
+     *
+     * @param authUserDTO 用户信息DTO对象
+     * @return 包含用户信息的Result对象
+     */
+    @RequestMapping("getUserInfo")
+    public Result<AuthUserDTO> getUserInfo(@RequestBody AuthUserDTO authUserDTO) {
+        try {
+            if (log.isInfoEnabled()) {
+                log.info("UserController.getUserInfo.dto:{}", JSON.toJSONString(authUserDTO));
+            }
+            Preconditions.checkArgument(!StringUtils.isBlank(authUserDTO.getUserName()), "用户名不能为空");
+            AuthUserBO authUserBO = AuthUserDTOConverter.INSTANCE.convertDTOToBO(authUserDTO);
+            AuthUserBO userInfo = authUserDomainService.getUserInfo(authUserBO);
+            return Result.ok(AuthUserDTOConverter.INSTANCE.convertBOToDTO(userInfo));
+        } catch (Exception e) {
+            log.error("UserController.update.error:{}", e.getMessage(), e);
+            return Result.fail("更新用户信息失败");
+        }
+    }
+
+    /**
+     * 用户登出
+     *
+     * @param userName 用户名
+     * @return Result对象，包含操作结果
+     * @throws IllegalArgumentException 如果用户名为空或无效
+     */
+    @RequestMapping("logOut")
+    public Result logOut(@RequestParam String userName) {
+        try {
+            log.info("UserController.logOut.userName:{}", userName);
+            Preconditions.checkArgument(!StringUtils.isBlank(userName), "用户名不能为空");
+            StpUtil.logout(userName);
+            return Result.ok("用户登出成功");
+        } catch (Exception e) {
+            log.error("UserController.logOut.error:{}", e.getMessage(), e);
+            return Result.fail("用户登出失败");
         }
     }
 

@@ -3,7 +3,7 @@ package com.lb.auth.application.controller;
 import com.alibaba.fastjson2.JSON;
 import com.google.common.base.Preconditions;
 import com.lb.auth.application.dto.AuthRolePermissionDTO;
-import com.lb.auth.application.mapper.AuthRolePermissionDTOConverter;
+import com.lb.auth.application.converter.AuthRolePermissionDTOConverter;
 import com.lb.auth.common.entity.Result;
 import com.lb.auth.domain.entity.AuthRolePermissionBO;
 import com.lb.auth.domain.service.AuthRolePermissionDomainService;

@@ -3,7 +3,7 @@ package com.lb.auth.application.controller;
 import com.alibaba.fastjson2.JSON;
 import com.google.common.base.Preconditions;
 import com.lb.auth.application.dto.AuthPermissionDTO;
-import com.lb.auth.application.mapper.AuthPermissionDTOConverter;
+import com.lb.auth.application.converter.AuthPermissionDTOConverter;
 import com.lb.auth.common.entity.Result;
 import com.lb.auth.domain.entity.AuthPermissionBO;
 import com.lb.auth.domain.service.AuthPermissionDomainService;

@@ -6,6 +6,7 @@ import com.lb.auth.infra.basic.service.AuthUserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class AuthUserServiceImpl implements AuthUserService {
@@ -56,4 +57,14 @@ public class AuthUserServiceImpl implements AuthUserService {
         return this.authUserDao.deleteById(id) > 0;
     }
 
+    /**
+     * 根据条件查询AuthUser列表
+     *
+     * @param authUser 查询条件
+     * @return 满足条件的AuthUser列表
+     */
+    @Override
+    public List<AuthUser> queryByCondition(AuthUser authUser) {
+        return this.authUserDao.queryAllByLimit(authUser);
+    }
 }

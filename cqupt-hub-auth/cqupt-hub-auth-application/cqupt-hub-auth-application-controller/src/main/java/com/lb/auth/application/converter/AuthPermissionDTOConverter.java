@@ -1,4 +1,4 @@
-package com.lb.auth.application.mapper;
+package com.lb.auth.application.converter;
 
 import com.lb.auth.application.dto.AuthPermissionDTO;
 import com.lb.auth.domain.entity.AuthPermissionBO;

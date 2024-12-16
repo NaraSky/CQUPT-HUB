@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.LinkedList;
@@ -192,5 +193,21 @@ public class AuthUserDomainServiceImpl implements AuthUserDomainService {
         return tokenInfo;
     }
 
-
+    /**
+     * 根据AuthUserBO对象获取AuthUserBO对象信息
+     *
+     * @param authUserBO AuthUserBO对象，包含要查询的用户信息
+     * @return 返回查询到的AuthUserBO对象，若未查询到则返回一个空的AuthUserBO对象
+     */
+    @Override
+    public AuthUserBO getUserInfo(AuthUserBO authUserBO) {
+        AuthUser authUser = new AuthUser();
+        authUser.setUserName(authUserBO.getUserName());
+        List<AuthUser> userList = authUserService.queryByCondition(authUser);
+        if(CollectionUtils.isEmpty(userList)){
+            return new AuthUserBO();
+        }
+        AuthUser user = userList.get(0);
+        return AuthUserBOConverter.INSTANCE.convertEntityToBO(user);
+    }
 }

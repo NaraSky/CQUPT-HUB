@@ -2,6 +2,8 @@ package com.lb.auth.infra.basic.service;
 
 import com.lb.auth.infra.basic.entity.AuthUser;
 
+import java.util.List;
+
 public interface AuthUserService {
 
     /**
@@ -35,5 +37,10 @@ public interface AuthUserService {
      * @return 是否成功
      */
     boolean deleteById(Long id);
+
+    /**
+     * 根据条件查询数量
+     */
+    List<AuthUser> queryByCondition(AuthUser authUser);
 
 }
