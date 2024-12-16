@@ -24,7 +24,11 @@ public class PermissionController {
     private AuthPermissionDomainService authPermissionDomainService;
 
     /**
-     * 新增权限
+     * 添加权限
+     *
+     * @param authPermissionDTO 包含权限信息的DTO对象
+     * @return 包含操作结果的Result对象，成功时返回true，失败时返回false及错误信息
+     * @throws Exception 当发生异常时抛出
      */
     @RequestMapping("add")
     public Result<Boolean> add(@RequestBody AuthPermissionDTO authPermissionDTO) {
@@ -77,5 +81,21 @@ public class PermissionController {
             return Result.fail("删除权限信息失败");
         }
     }
+
+    /**
+     * 查询用户权限
+     */
+    @RequestMapping("getPermission")
+    public Result<Boolean> getPermission(String userName) {
+        try {
+            log.info("PermissionController.getPermission.userName:{}",userName);
+            Preconditions.checkArgument(!StringUtils.isBlank(userName), "用户id不能为空");
+            return Result.ok(authPermissionDomainService.getPermission(userName));
+        } catch (Exception e) {
+            log.error("PermissionController.getPermission.error:{}", e.getMessage(), e);
+            return Result.fail("查询用户权限信息失败");
+        }
+    }
+
 
 }
