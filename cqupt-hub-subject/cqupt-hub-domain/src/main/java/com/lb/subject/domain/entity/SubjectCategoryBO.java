@@ -7,6 +7,8 @@ import java.io.Serializable;
 @Data
 public class SubjectCategoryBO implements Serializable {
 
+    private static final long serialVersionUID = -1509887431737431382L;
+
     /**
      * 主键
      */
@@ -32,6 +34,8 @@ public class SubjectCategoryBO implements Serializable {
      */
     private Long parentId;
 
-    private static final long serialVersionUID = 1L;
-
+    /**
+     * 数量
+     */
+    private Integer count;
 }

@@ -47,4 +47,11 @@ public interface SubjectCategoryService {
      */
     List<SubjectCategory> queryCategory(SubjectCategory subjectCategory);
 
+    /**
+     * 查询指定主题的数量
+     *
+     * @param id 主题的ID
+     * @return 返回指定主题的数量，若未找到则返回null
+     */
+    Integer querySubjectCount(Long id);
 }
