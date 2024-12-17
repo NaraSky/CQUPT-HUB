@@ -33,7 +33,14 @@ public class FileService {
      * 上传文件
      */
     public String uploadFile(MultipartFile uploadFile, String bucket, String objectName) throws Exception {
-        storageAdapter.uploadFile(uploadFile,bucket,objectName);
+        // 调用storageAdapter的uploadFile方法上传文件
+        storageAdapter.uploadFile(uploadFile, bucket, objectName);
+
+        // 拼接新的objectName，包括原始的文件名
+        objectName = objectName + "/" + uploadFile.getOriginalFilename();
+
+        // 调用storageAdapter的getUrl方法获取文件的URL
         return storageAdapter.getUrl(bucket, objectName);
     }
+
 }

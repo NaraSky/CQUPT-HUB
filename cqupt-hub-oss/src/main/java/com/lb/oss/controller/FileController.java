@@ -1,6 +1,7 @@
 package com.lb.oss.controller;
 
 import com.alibaba.nacos.api.config.annotation.NacosValue;
+import com.lb.oss.entity.Result;
 import com.lb.oss.service.FileService;
 import com.lb.oss.util.MinioUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,9 +43,10 @@ public class FileController {
      * 上传文件
      */
     @RequestMapping("/upload")
-    public String upload(MultipartFile uploadFile, String bucket, String objectName) throws Exception {
-        objectName = objectName + "/" + uploadFile.getOriginalFilename();
-        return fileService.uploadFile(uploadFile, bucket, objectName);
+    public Result upload(MultipartFile uploadFile, String bucket, String objectName) throws Exception {
+        String url = fileService.uploadFile(uploadFile, bucket, objectName);
+        return Result.success(url);
     }
+
 
 }
