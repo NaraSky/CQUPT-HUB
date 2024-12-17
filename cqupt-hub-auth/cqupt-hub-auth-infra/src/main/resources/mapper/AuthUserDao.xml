@@ -259,6 +259,74 @@
         where id = #{id}
     </update>
 
+    <update id="updateByUserName">
+        <!-- 更新auth_user表 -->
+        update auth_user
+        <!-- 设置需要更新的字段 -->
+        <set>
+            <!-- 如果nickName不为空 -->
+            <if test="nickName != null and nickName != ''">
+                nick_name = #{nickName},
+            </if>
+            <!-- 如果email不为空 -->
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <!-- 如果phone不为空 -->
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <!-- 如果password不为空 -->
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <!-- 如果sex不为空 -->
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <!-- 如果avatar不为空 -->
+            <if test="avatar != null and avatar != ''">
+                avatar = #{avatar},
+            </if>
+            <!-- 如果status不为空 -->
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <!-- 如果introduce不为空 -->
+            <if test="introduce != null and introduce != ''">
+                introduce = #{introduce},
+            </if>
+            <!-- 如果extJson不为空 -->
+            <if test="extJson != null and extJson != ''">
+                ext_json = #{extJson},
+            </if>
+            <!-- 如果createdBy不为空 -->
+            <if test="createdBy != null and createdBy != ''">
+                created_by = #{createdBy},
+            </if>
+            <!-- 如果createdTime不为空 -->
+            <if test="createdTime != null">
+                created_time = #{createdTime},
+            </if>
+            <!-- 如果updateBy不为空 -->
+            <if test="updateBy != null and updateBy != ''">
+                update_by = #{updateBy},
+            </if>
+            <!-- 如果updateTime不为空 -->
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <!-- 如果isDeleted不为空 -->
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted},
+            </if>
+        </set>
+        <!-- 根据userName进行更新 -->
+        where user_name = #{userName}
+    </update>
+
+
+
     <!--通过主键删除-->
     <delete id="deleteById">
         delete

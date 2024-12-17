@@ -56,8 +56,6 @@ public class UserController {
      */
     private void checkUserInfo(@RequestBody AuthUserDTO authUserDTO) {
         Preconditions.checkArgument(!StringUtils.isBlank(authUserDTO.getUserName()), "用户名不能为空");
-        Preconditions.checkArgument(!StringUtils.isBlank(authUserDTO.getEmail()), "邮件地址不能为空");
-        Preconditions.checkArgument(!StringUtils.isBlank(authUserDTO.getPassword()), "密码不能为空");
     }
 
     /**
