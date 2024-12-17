@@ -43,6 +43,7 @@ public class FileController {
      */
     @RequestMapping("/upload")
     public String upload(MultipartFile uploadFile, String bucket, String objectName) throws Exception {
+        objectName = objectName + "/" + uploadFile.getOriginalFilename();
         return fileService.uploadFile(uploadFile, bucket, objectName);
     }
 
